@@ -2,10 +2,13 @@
 
 > Open-source developer productivity dashboard — track coding habits, visualize GitHub contribution patterns, and set personal development goals.
 
+![CI](https://github.com/Priyanshu-byte-coder/devtrack/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![GSSoC 2025](https://img.shields.io/badge/GSSoC-2025-orange.svg)
 ![Tech Stack](https://img.shields.io/badge/stack-Next.js%20%7C%20Node.js%20%7C%20PostgreSQL-blue)
+
+> **Live demo coming soon** — deploy your own in one click with the setup guide below.
 
 ---
 
