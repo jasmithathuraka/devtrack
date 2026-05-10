@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 function currentWeekStart(): string {
   const now = new Date();
   const d = new Date(now);

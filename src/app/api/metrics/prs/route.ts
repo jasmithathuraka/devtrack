@@ -1,6 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 const GITHUB_API = "https://api.github.com";
 
 export async function GET() {
@@ -11,7 +13,10 @@ export async function GET() {
 
   const searchRes = await fetch(
     `${GITHUB_API}/search/issues?q=type:pr+author:@me&per_page=100`,
-    { headers: { Authorization: `Bearer ${session.accessToken}` } }
+    {
+      headers: { Authorization: `Bearer ${session.accessToken}` },
+      cache: "no-store",
+    }
   );
 
   if (!searchRes.ok) {
