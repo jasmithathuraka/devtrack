@@ -1,29 +1,19 @@
 const GITHUB_API = "https://api.github.com";
 
-export async function fetchUserEvents(
-  username: string,
-  token: string
-): Promise<GitHubEvent[]> {
-  const res = await fetch(`${GITHUB_API}/users/${username}/events/public`, {
+export async function fetchUserEvents(token: string): Promise<GitHubEvent[]> {
+  const res = await fetch(`${GITHUB_API}/user/events?per_page=100`, {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/vnd.github+json",
     },
   });
-
-  if (!res.ok) {
-    throw new Error(`GitHub API error: ${res.status}`);
-  }
-
+  if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
   return res.json();
 }
 
-export async function fetchUserRepos(
-  username: string,
-  token: string
-): Promise<GitHubRepo[]> {
+export async function fetchUserRepos(token: string): Promise<GitHubRepo[]> {
   const res = await fetch(
-    `${GITHUB_API}/users/${username}/repos?sort=pushed&per_page=10`,
+    `${GITHUB_API}/user/repos?sort=pushed&per_page=10`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,11 +21,7 @@ export async function fetchUserRepos(
       },
     }
   );
-
-  if (!res.ok) {
-    throw new Error(`GitHub API error: ${res.status}`);
-  }
-
+  if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
   return res.json();
 }
 

@@ -15,8 +15,8 @@ out/
 .env.production
 .env.*.local
 
-# Prisma
-server/prisma/migrations/
+# Next.js
+next-env.d.ts
 
 # Logs
 *.log

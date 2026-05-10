@@ -30,7 +30,7 @@ This project follows the [Contributor Covenant](./CODE_OF_CONDUCT.md). Be respec
    - `medium` — requires reading some existing code
    - `advanced` — architectural changes, requires discussion first
 3. Comment "I'd like to work on this" to get assigned
-4. **Do not open a PR for an unassigned issue** — we may already be working on it
+4. **Do not open a PR for an unassigned issue**
 
 First-time contributors: start with `good-first-issue` only.
 
@@ -38,16 +38,32 @@ First-time contributors: start with `good-first-issue` only.
 
 ## Setting Up Locally
 
-Follow the [README setup guide](./README.md#getting-started) first.
+Follow the [README setup guide](./README.md#getting-started).
 
-Additional dev tools:
+The app is a single Next.js project — no separate backend to run.
 
 ```bash
-# From repo root — run both client and server with one command
-npm run dev:all
+npm install
+cp .env.example .env.local
+# fill in .env.local (see README)
+npm run dev
 ```
 
-Requires `concurrently` installed globally or via root `package.json`.
+---
+
+## Project Structure
+
+Key files to know:
+
+| Path | Purpose |
+|------|---------|
+| `src/app/api/metrics/contributions/route.ts` | Contribution graph data from GitHub API |
+| `src/app/api/metrics/prs/route.ts` | PR analytics from GitHub API |
+| `src/app/api/goals/route.ts` | Weekly goals CRUD via Supabase |
+| `src/lib/auth.ts` | NextAuth config, GitHub OAuth, Supabase user upsert |
+| `src/lib/supabase.ts` | Supabase admin client (server-side only) |
+| `src/components/` | Dashboard UI components |
+| `supabase/schema.sql` | Database schema — run once in Supabase SQL Editor |
 
 ---
 
@@ -66,15 +82,15 @@ docs/update-setup-guide
 ```
 feat: add dark mode toggle to dashboard
 fix: correct PR merge rate calculation
-docs: add PostgreSQL setup troubleshooting
+docs: add Supabase setup troubleshooting
 ```
 
 ### Code style
 
 - TypeScript strict mode — no `any` types
-- ESLint + Prettier configured — run `npm run lint` before pushing
+- ESLint + Prettier — run `npm run lint` before pushing
 - Components: one file per component, named exports
-- API routes: RESTful, versioned under `/api/v1/`
+- API routes: use `getServerSession(authOptions)` for auth checks, never trust client input
 
 ---
 
@@ -94,8 +110,7 @@ PRs without a linked issue will not be reviewed.
 
 - First response within **48 hours**
 - Address all review comments before requesting re-review
-- After approval, maintainer will merge (contributors do not merge their own PRs)
-- Merged PRs get a shoutout in the next release notes
+- After approval, maintainer merges (contributors do not self-merge)
 
 ---
 
@@ -109,8 +124,7 @@ PRs without a linked issue will not be reviewed.
 | `bug` | Something broken |
 | `enhancement` | New feature or improvement |
 | `docs` | Documentation only |
-| `needs-triage` | Not yet assessed |
-| `help-wanted` | Maintainer needs external input |
+| `~1h` `~2h` `~4h` `~8h` | Estimated effort |
 
 ---
 

@@ -6,9 +6,9 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![GSSoC 2025](https://img.shields.io/badge/GSSoC-2025-orange.svg)
-![Tech Stack](https://img.shields.io/badge/stack-Next.js%20%7C%20Node.js%20%7C%20PostgreSQL-blue)
+![Tech Stack](https://img.shields.io/badge/stack-Next.js%20%7C%20Supabase%20%7C%20TypeScript-blue)
 
-> **Live demo coming soon** — deploy your own in one click with the setup guide below.
+> **Live demo coming soon** — deploy your own in minutes with the guide below.
 
 ---
 
@@ -23,9 +23,8 @@ Developer metrics are scattered across GitHub, Jira, Notion, and half a dozen ot
 - **GitHub OAuth** — sign in with GitHub, no extra account needed
 - **Contribution Heatmap** — visualize daily commit activity over time
 - **PR Analytics** — average review time, merge rate, open/closed ratio
-- **Issue Metrics** — resolution time, label breakdown, assignee stats
 - **Goal Tracker** — set weekly coding goals and track progress
-- **Team View** — aggregate metrics for small teams (up to 10 members)
+- **No separate backend** — Next.js API routes + Supabase, deploy to Vercel for free
 
 ---
 
@@ -34,11 +33,11 @@ Developer metrics are scattered across GitHub, Jira, Notion, and half a dozen ot
 | Layer | Technology |
 |-------|-----------|
 | Frontend | Next.js 14 (App Router), TypeScript, Tailwind CSS |
-| Backend | Node.js, Express, TypeScript |
-| Auth | GitHub OAuth 2.0 via NextAuth.js |
-| Database | PostgreSQL + Prisma ORM |
+| Auth | GitHub OAuth via NextAuth.js |
+| Database | Supabase (PostgreSQL) |
+| API | Next.js Route Handlers (`/app/api/`) |
 | Charts | Recharts |
-| Deployment | Vercel (frontend), Railway (backend) |
+| Deployment | Vercel (free, auto-deploys from GitHub) |
 
 ---
 
@@ -46,20 +45,28 @@ Developer metrics are scattered across GitHub, Jira, Notion, and half a dozen ot
 
 ```
 devtrack/
-├── client/          # Next.js frontend
-│   ├── src/
-│   │   ├── app/         # App Router pages
-│   │   ├── components/  # Reusable UI components
-│   │   └── lib/         # API clients, utilities
-│   └── package.json
-├── server/          # Express API
-│   ├── src/
-│   │   ├── routes/      # API route handlers
-│   │   ├── controllers/ # Business logic
-│   │   ├── middleware/  # Auth, validation
-│   │   └── db/          # Prisma schema, migrations
-│   └── package.json
-├── .github/         # Issue templates, PR template
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/[...nextauth]/  # GitHub OAuth
+│   │   │   ├── metrics/
+│   │   │   │   ├── contributions/   # GET commit activity
+│   │   │   │   └── prs/             # GET PR analytics
+│   │   │   └── goals/               # GET + POST weekly goals
+│   │   ├── dashboard/               # Main dashboard page
+│   │   └── page.tsx                 # Landing page
+│   ├── components/                  # ContributionGraph, PRMetrics, GoalTracker
+│   ├── lib/
+│   │   ├── auth.ts                  # NextAuth config + Supabase user upsert
+│   │   ├── github.ts                # GitHub API helpers
+│   │   └── supabase.ts              # Supabase admin client (server-side)
+│   └── types/
+│       └── next-auth.d.ts           # Session type augmentation
+├── supabase/
+│   └── schema.sql                   # Run once in Supabase SQL editor
+├── .github/
+│   ├── workflows/ci.yml             # Type-check + lint on every PR
+│   └── ISSUE_TEMPLATE/
 ├── CONTRIBUTING.md
 └── CODE_OF_CONDUCT.md
 ```
@@ -71,57 +78,56 @@ devtrack/
 ### Prerequisites
 
 - Node.js >= 18
-- PostgreSQL >= 14
-- A GitHub OAuth App ([create one here](https://github.com/settings/applications/new))
+- A [Supabase](https://supabase.com) account (free)
+- A [GitHub OAuth App](https://github.com/settings/applications/new)
 
 ### 1. Clone the repo
 
 ```bash
 git clone https://github.com/Priyanshu-byte-coder/devtrack.git
 cd devtrack
-```
-
-### 2. Set up the backend
-
-```bash
-cd server
-cp .env.example .env
 npm install
 ```
 
-Edit `.env`:
+### 2. Create a Supabase project
 
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/devtrack
-JWT_SECRET=your_jwt_secret
-PORT=4000
-```
+1. Go to [supabase.com](https://supabase.com) → New Project
+2. Once created, go to **SQL Editor** → **New Query**
+3. Paste and run the contents of `supabase/schema.sql`
+4. Go to **Project Settings → API** and copy:
+   - Project URL
+   - `anon` public key
+   - `service_role` secret key
 
-Run migrations and start:
+### 3. Create a GitHub OAuth App
+
+1. Go to [github.com/settings/applications/new](https://github.com/settings/applications/new)
+2. Fill in:
+   - **Homepage URL:** `http://localhost:3000`
+   - **Callback URL:** `http://localhost:3000/api/auth/callback/github`
+3. Copy **Client ID** and **Client Secret**
+
+### 4. Configure environment
 
 ```bash
-npm run db:migrate
-npm run dev
-```
-
-### 3. Set up the frontend
-
-```bash
-cd ../client
 cp .env.example .env.local
-npm install
 ```
 
 Edit `.env.local`:
 
 ```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_nextauth_secret
-GITHUB_ID=your_github_client_id
-GITHUB_SECRET=your_github_client_secret
+NEXTAUTH_SECRET=any_random_32char_string
+
+GITHUB_ID=your_client_id
+GITHUB_SECRET=your_client_secret
 ```
 
-Start the dev server:
+### 5. Run
 
 ```bash
 npm run dev
@@ -138,11 +144,9 @@ DevTrack is actively seeking contributors for GSSoC 2025. All skill levels welco
 See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for full guidelines.
 
 Quick start:
-
-1. Browse [open issues](../../issues) — look for `good-first-issue` or `medium` labels
+1. Browse [open issues](../../issues) — look for `good-first-issue` label
 2. Comment on the issue to get assigned
 3. Fork → branch → PR
-4. Respond to review feedback within 5 days
 
 **Communication:** GitHub Discussions + Discord (link in Discussions pinned post)
 
@@ -150,11 +154,11 @@ Quick start:
 
 ## Roadmap
 
-- [ ] GitLab integration
+- [ ] GitLab integration (#6)
+- [ ] Dark mode toggle (#1)
 - [ ] Slack/Discord weekly digest notifications
 - [ ] VS Code extension for real-time tracking
 - [ ] Mobile-responsive redesign
-- [ ] CSV/PDF export for metrics
 
 ---
 

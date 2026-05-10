@@ -5,6 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.2.0] — 2025-05-10
+
+### Changed — Breaking
+- **Removed Express backend** — all API logic moved into Next.js Route Handlers (`src/app/api/`)
+- **Replaced Prisma + PostgreSQL** with Supabase JS client — no migration tooling needed, schema in `supabase/schema.sql`
+- **Collapsed monorepo** — `client/` and `server/` removed; project now lives at repo root
+
+### Added
+- `src/app/api/metrics/contributions/route.ts` — live GitHub commit data (was mock)
+- `src/app/api/metrics/prs/route.ts` — live GitHub PR analytics (was mock)
+- `src/app/api/goals/route.ts` — GET + POST weekly goals persisted in Supabase
+- `src/lib/supabase.ts` — Supabase admin client
+- `supabase/schema.sql` — database schema for users, goals, metric_snapshots
+- Loading skeletons on all dashboard components
+- `signIn` callback in `auth.ts` upserts user into Supabase on first login
+
+### Removed
+- `server/` directory (Express, Prisma, JWT middleware)
+- `client/` directory (moved to root)
+- `NEXT_PUBLIC_API_URL` env var (no separate backend)
+
+---
+
 ## [0.1.0] — 2025-05-10
 
 ### Added
