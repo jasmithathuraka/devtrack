@@ -17,7 +17,7 @@ export default function HomePage() {
             Sign in with GitHub
           </Link>
           <a
-            href="https://github.com/yourusername/devtrack"
+            href="https://github.com/Priyanshu-byte-coder/devtrack"
             target="_blank"
             rel="noopener noreferrer"
             className="border border-slate-600 text-white px-6 py-3 rounded-lg font-semibold hover:border-slate-400 transition"

@@ -74,7 +74,7 @@ devtrack/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/devtrack.git
+git clone https://github.com/Priyanshu-byte-coder/devtrack.git
 cd devtrack
 ```
 
