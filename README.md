@@ -154,11 +154,19 @@ Quick start:
 
 ## Roadmap
 
-- [ ] GitLab integration (#6)
 - [ ] Dark mode toggle (#1)
-- [ ] Slack/Discord weekly digest notifications
+- [ ] User avatar in navbar (#2)
+- [ ] GitLab integration (#6, #9, #10, #11)
+- [ ] Sign-out button (#12)
+- [ ] Create Goal form UI (#13)
+- [ ] Mobile responsive layout (#14)
+- [ ] User profile/settings page (#15)
+- [ ] Export metrics to CSV (#16)
+- [ ] Chart type toggle — bar/line (#17)
+- [ ] Contribution heatmap calendar (#18)
+- [ ] Dashboard auth guard (#19)
+- [ ] Slack/Discord weekly digest (#20)
 - [ ] VS Code extension for real-time tracking
-- [ ] Mobile-responsive redesign
 
 ---
 
