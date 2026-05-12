@@ -10,7 +10,7 @@
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
-Email: **priyanshu@devtrack.dev** *(or open a [private security advisory](https://github.com/Priyanshu-byte-coder/devtrack/security/advisories/new))*
+Email: **doshipriyanshu3@gmail.com** *(or open a [private security advisory](https://github.com/Priyanshu-byte-coder/devtrack/security/advisories/new))*
 
 Include:
 - Description of the vulnerability
