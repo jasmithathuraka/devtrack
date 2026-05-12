@@ -155,16 +155,15 @@ Quick start:
 ## Roadmap
 
 - [ ] Dark mode toggle (#1)
-- [ ] User avatar in navbar (#2)
+- [x] User avatar in dashboard header (#2)
 - [ ] GitLab integration (#6, #9, #10, #11)
-- [ ] Sign-out button (#12)
 - [ ] Create Goal form UI (#13)
 - [ ] Mobile responsive layout (#14)
 - [ ] User profile/settings page (#15)
 - [ ] Export metrics to CSV (#16)
 - [ ] Chart type toggle — bar/line (#17)
 - [ ] Contribution heatmap calendar (#18)
-- [ ] Dashboard auth guard (#19)
+- [x] Dashboard auth guard — redirect unauthenticated users (#19)
 - [ ] Slack/Discord weekly digest (#20)
 - [ ] VS Code extension for real-time tracking
 
