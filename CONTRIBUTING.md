@@ -38,32 +38,40 @@ First-time contributors: start with `good-first-issue` only.
 
 ## Setting Up Locally
 
-Follow the [README setup guide](./README.md#getting-started).
+Full step-by-step guide: **[DEVELOPMENT.md](./DEVELOPMENT.md)**
 
-The app is a single Next.js project — no separate backend to run.
+Short version:
 
 ```bash
+git clone https://github.com/Priyanshu-byte-coder/devtrack.git
+cd devtrack
 npm install
 cp .env.example .env.local
-# fill in .env.local (see README)
+# fill in .env.local — see DEVELOPMENT.md for exact values
 npm run dev
 ```
+
+Stuck? Check [Common errors](./DEVELOPMENT.md#common-errors) in `DEVELOPMENT.md` first.
 
 ---
 
 ## Project Structure
 
-Key files to know:
+Key files:
 
 | Path | Purpose |
 |------|---------|
-| `src/app/api/metrics/contributions/route.ts` | Contribution graph data from GitHub API |
-| `src/app/api/metrics/prs/route.ts` | PR analytics from GitHub API |
-| `src/app/api/goals/route.ts` | Weekly goals CRUD via Supabase |
+| `src/app/api/metrics/contributions/` | Commit activity from GitHub API |
+| `src/app/api/metrics/prs/` | PR analytics from GitHub API |
+| `src/app/api/metrics/streak/` | Commit streak calculation |
+| `src/app/api/metrics/repos/` | Top repositories by commits |
+| `src/app/api/goals/` | Weekly goals CRUD via Supabase |
 | `src/lib/auth.ts` | NextAuth config, GitHub OAuth, Supabase user upsert |
 | `src/lib/supabase.ts` | Supabase admin client (server-side only) |
 | `src/components/` | Dashboard UI components |
-| `supabase/schema.sql` | Database schema — run once in Supabase SQL Editor |
+| `supabase/schema.sql` | DB schema — run once in Supabase SQL Editor |
+
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for architecture walkthrough and how to add new widgets.
 
 ---
 

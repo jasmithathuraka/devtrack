@@ -16,8 +16,9 @@ How this fits into the larger project.
 
 ## Files to Look At
 
-- `client/src/components/...`
-- `server/src/routes/...`
+- `src/components/` — UI components (React, Tailwind)
+- `src/app/api/` — Next.js API route handlers
+- `src/app/dashboard/page.tsx` — dashboard layout
 
 ## Acceptance Criteria
 

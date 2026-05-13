@@ -7,6 +7,7 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 ![GSSoC 2025](https://img.shields.io/badge/GSSoC-2025-orange.svg)
 ![Tech Stack](https://img.shields.io/badge/stack-Next.js%20%7C%20Supabase%20%7C%20TypeScript-blue)
+![Good First Issues](https://img.shields.io/github/issues/Priyanshu-byte-coder/devtrack/good%20first%20issue?label=good%20first%20issues&color=7c3aed)
 
 > **Live demo coming soon** — deploy your own in minutes with the guide below.
 
@@ -20,11 +21,15 @@ Developer metrics are scattered across GitHub, Jira, Notion, and half a dozen ot
 
 ## Features
 
-- **GitHub OAuth** — sign in with GitHub, no extra account needed
-- **Contribution Heatmap** — visualize daily commit activity over time
-- **PR Analytics** — average review time, merge rate, open/closed ratio
-- **Goal Tracker** — set weekly coding goals and track progress
-- **No separate backend** — Next.js API routes + Supabase, deploy to Vercel for free
+| Feature | Description |
+|---------|-------------|
+| **GitHub OAuth** | Sign in with GitHub — no extra account needed |
+| **Commit Activity Chart** | Visualize daily commit activity with 7d / 14d / 30d / 90d range selector |
+| **Commit Streak Tracker** | Current streak, longest streak, active days — stay consistent |
+| **PR Analytics** | Average review time, merge rate, open/closed PR count |
+| **Top Repositories** | Ranked list of your most active repos over any time range |
+| **Weekly Goal Tracker** | Set coding goals and track progress with a progress bar UI |
+| **No separate backend** | Next.js API routes + Supabase, deploy to Vercel for free |
 
 ---
 
@@ -48,40 +53,41 @@ devtrack/
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   ├── auth/[...nextauth]/  # GitHub OAuth
+│   │   │   ├── auth/[...nextauth]/   # GitHub OAuth
 │   │   │   ├── metrics/
-│   │   │   │   ├── contributions/   # GET commit activity
-│   │   │   │   └── prs/             # GET PR analytics
-│   │   │   └── goals/               # GET + POST weekly goals
-│   │   ├── dashboard/               # Main dashboard page
-│   │   └── page.tsx                 # Landing page
-│   ├── components/                  # ContributionGraph, PRMetrics, GoalTracker
-│   ├── lib/
-│   │   ├── auth.ts                  # NextAuth config + Supabase user upsert
-│   │   ├── github.ts                # GitHub API helpers
-│   │   └── supabase.ts              # Supabase admin client (server-side)
-│   └── types/
-│       └── next-auth.d.ts           # Session type augmentation
+│   │   │   │   ├── contributions/    # GET commit activity
+│   │   │   │   ├── prs/              # GET PR analytics
+│   │   │   │   ├── streak/           # GET commit streak
+│   │   │   │   └── repos/            # GET top repositories
+│   │   │   └── goals/                # GET + POST weekly goals
+│   │   ├── dashboard/                # Main dashboard page
+│   │   └── page.tsx                  # Landing page
+│   ├── components/
+│   │   ├── ContributionGraph.tsx     # Bar chart with time range tabs
+│   │   ├── PRMetrics.tsx             # PR stats grid
+│   │   ├── GoalTracker.tsx           # Weekly goals progress bars
+│   │   ├── StreakTracker.tsx         # Streak stats widget
+│   │   ├── TopRepos.tsx              # Ranked repos list
+│   │   └── DashboardHeader.tsx       # User avatar + sign out
+│   └── lib/
+│       ├── auth.ts                   # NextAuth config + Supabase user upsert
+│       └── supabase.ts               # Supabase admin client (server-side)
 ├── supabase/
-│   └── schema.sql                   # Run once in Supabase SQL editor
-├── .github/
-│   ├── workflows/ci.yml             # Type-check + lint on every PR
-│   └── ISSUE_TEMPLATE/
-├── CONTRIBUTING.md
-└── CODE_OF_CONDUCT.md
+│   └── schema.sql                    # Run once in Supabase SQL editor
+└── .github/
+    ├── workflows/ci.yml              # Type-check + lint on every PR
+    └── ISSUE_TEMPLATE/               # Bug, feature, good-first-issue templates
 ```
 
 ---
 
 ## Getting Started
 
-### Prerequisites
+Full setup guide with troubleshooting: **[DEVELOPMENT.md](./DEVELOPMENT.md)**
 
-- Node.js >= 18
-- A [Supabase](https://supabase.com) account (free)
-- A [GitHub OAuth App](https://github.com/settings/applications/new)
+### Quick start
 
-### 1. Clone the repo
+### 1. Clone
 
 ```bash
 git clone https://github.com/Priyanshu-byte-coder/devtrack.git
@@ -89,31 +95,23 @@ cd devtrack
 npm install
 ```
 
-### 2. Create a Supabase project
+### 2. Supabase
 
-1. Go to [supabase.com](https://supabase.com) → New Project
-2. Once created, go to **SQL Editor** → **New Query**
-3. Paste and run the contents of `supabase/schema.sql`
-4. Go to **Project Settings → API** and copy:
-   - Project URL
-   - `anon` public key
-   - `service_role` secret key
+1. Create a free project at [supabase.com](https://supabase.com)
+2. **SQL Editor → New Query** — paste and run `supabase/schema.sql`
+3. **Project Settings → API** — copy Project URL, anon key, service_role key
 
-### 3. Create a GitHub OAuth App
+### 3. GitHub OAuth App
 
-1. Go to [github.com/settings/applications/new](https://github.com/settings/applications/new)
-2. Fill in:
-   - **Homepage URL:** `http://localhost:3000`
-   - **Callback URL:** `http://localhost:3000/api/auth/callback/github`
-3. Copy **Client ID** and **Client Secret**
+1. [Create an OAuth App](https://github.com/settings/applications/new)
+2. Callback URL: `http://localhost:3000/api/auth/callback/github`
+3. Copy Client ID and Client Secret
 
-### 4. Configure environment
+### 4. Environment
 
 ```bash
 cp .env.example .env.local
 ```
-
-Edit `.env.local`:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
@@ -121,7 +119,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=any_random_32char_string
+NEXTAUTH_SECRET=run_openssl_rand_base64_32
 
 GITHUB_ID=your_client_id
 GITHUB_SECRET=your_client_secret
@@ -139,33 +137,51 @@ Visit `http://localhost:3000`.
 
 ## Contributing
 
-DevTrack is actively seeking contributors for GSSoC 2025. All skill levels welcome.
+DevTrack actively welcomes contributors of all skill levels, including GSSoC 2025 participants.
 
-See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for full guidelines.
+**Setup takes under 10 minutes** — see [DEVELOPMENT.md](./DEVELOPMENT.md) for the full walkthrough including common errors.
 
-Quick start:
-1. Browse [open issues](../../issues) — look for `good-first-issue` label
-2. Comment on the issue to get assigned
-3. Fork → branch → PR
+### Quick steps
 
-**Communication:** GitHub Discussions + Discord (link in Discussions pinned post)
+1. Browse [open issues](../../issues) — start with `good first issue` label
+2. Comment on the issue to get assigned before starting work
+3. Fork → branch (`feat/issue-42-description`) → PR against `main`
+4. Run `npm run lint && npm run type-check` before pushing
+
+See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for full guidelines, commit style, and review process.
 
 ---
 
 ## Roadmap
 
-- [ ] Dark mode toggle (#1)
-- [x] User avatar in dashboard header (#2)
-- [ ] GitLab integration (#6, #9, #10, #11)
-- [ ] Create Goal form UI (#13)
-- [ ] Mobile responsive layout (#14)
-- [ ] User profile/settings page (#15)
-- [ ] Export metrics to CSV (#16)
-- [ ] Chart type toggle — bar/line (#17)
-- [ ] Contribution heatmap calendar (#18)
-- [x] Dashboard auth guard — redirect unauthenticated users (#19)
-- [ ] Slack/Discord weekly digest (#20)
-- [ ] VS Code extension for real-time tracking
+### Done
+- [x] GitHub OAuth sign-in
+- [x] Contribution bar chart
+- [x] PR analytics widget
+- [x] Weekly goal tracker
+- [x] Dashboard auth guard
+- [x] User avatar in header
+- [x] Commit streak tracker
+- [x] Top repositories widget
+- [x] Time range selector on contribution chart
+
+### Open for contribution
+- [ ] Dark mode toggle ([#1](../../issues/1))
+- [ ] Responsive mobile layout ([#14](../../issues/14))
+- [ ] Create Goal form UI ([#13](../../issues/13))
+- [ ] Chart type toggle — bar/line ([#17](../../issues/17))
+- [ ] Streak milestone badges ([#31](../../issues/31))
+- [ ] Repo filter on contribution chart ([#35](../../issues/35))
+- [ ] Improve landing page — feature showcase ([#36](../../issues/36))
+- [ ] Language breakdown widget ([#32](../../issues/32))
+- [ ] Activity feed ([#33](../../issues/33))
+- [ ] Auto-progress goals from commits ([#34](../../issues/34))
+- [ ] Streak freeze feature ([#37](../../issues/37))
+- [ ] User profile/settings page ([#15](../../issues/15))
+- [ ] Export metrics to CSV/PDF ([#16](../../issues/16))
+- [ ] Contribution heatmap calendar ([#18](../../issues/18))
+- [ ] GitLab integration ([#6](../../issues/6))
+- [ ] Slack/Discord weekly digest ([#20](../../issues/20))
 
 ---
 
