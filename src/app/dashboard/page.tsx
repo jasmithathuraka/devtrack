@@ -15,9 +15,9 @@ export default async function DashboardPage() {
     redirect("/");
   }
 
-  return (
-  <div className="min-h-screen bg-slate-900 p-4 md:p-8">
-      <DashboardHeader />
+ return (
+      <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 text-[var(--foreground)] transition-colors">
+        <DashboardHeader />
 
       {/* Row 1: Contribution graph + Streak + Goals */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
