@@ -22,28 +22,13 @@ export default function PRMetrics() {
   }, []);
 
   const stats = metrics
-  ? [
-      { label: "Open PRs", value: metrics.open },
-      { label: "Merged (30d)", value: metrics.merged },
-
-      {
-        label: (
-          <div className="relative group">
-            <span className="cursor-help">
-              Avg Review Time ⓘ
-            </span>
-
-            <div className="absolute bottom-full left-0 mb-1 hidden group-hover:block bg-slate-700 text-white text-xs rounded px-2 py-1 w-64 z-10">
-              Average time from PR creation to close, based on your last 30 closed PRs
-            </div>
-          </div>
-        ),
-        value: `${metrics.avgReviewHours}h`
-      },
-
-      { label: "Merge Rate", value: metrics.mergeRate }
-    ]
-  : [];
+    ? [
+        { label: "Open PRs", value: metrics.open },
+        { label: "Merged (30d)", value: metrics.merged },
+        { label: "Avg Review Time", value: `${metrics.avgReviewHours}h` },
+        { label: "Merge Rate", value: metrics.mergeRate },
+      ]
+    : [];
 
   return (
     <div className="bg-slate-800 rounded-xl p-6">
